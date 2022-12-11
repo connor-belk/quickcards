@@ -1,34 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [title, setTitle] = useState("");
+  const [decks, setDecks] = useState([]);
+
+  async function handleCreateDeck(e) {
+    e.preventDefault();
+    await fetch("http://localhost:5000/decks", {
+      method: "POST",
+      body: JSON.stringify({ title: title }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).catch((err) => {
+      console.log(err);
+    });
+    setTitle("");
+  }
+
+  useEffect(() => {
+    async function getDecks() {
+      const response = await fetch("http://localhost:5000/decks");
+      const data = await response.json();
+      console.log(data);
+      setDecks(data);
+    }
+    getDecks();
+  }, []);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ul className="decks">
+        {decks.map((deck) => (
+          <li key={deck._id}>{deck.title}</li>
+        ))}
+      </ul>
+      <form onSubmit={handleCreateDeck} className="deck-form">
+        <label htmlFor="deck-title">Deck Title</label>
+        <input
+          id="deck-title"
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          required
+        />
+        <button>Create Deck</button>
+      </form>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
