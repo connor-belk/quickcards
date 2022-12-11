@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+require("dotenv").config();
 
 const Deck = require("./models/Deck.js");
 
@@ -18,13 +19,10 @@ app.post("/decks", async (req, res) => {
 
 const db = mongoose
   .set("strictQuery", true)
-  .connect(
-    "mongodb+srv://quickcards:nrfWjqL0NRfjk1ZV@gbws-cluster.ecrfle4.mongodb.net/?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("MongoDB connected...");
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
