@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import "./App.css";
-import { deleteDeck } from "./api/decks/deleteDeck";
-import { createDeck } from "./api/decks/createDeck";
-import { getDecks } from "./api/decks/getDecks";
+import { getDecks, createDeck, deleteDeck } from "./api/decks/decks";
 
 function App() {
   const [title, setTitle] = useState("");
