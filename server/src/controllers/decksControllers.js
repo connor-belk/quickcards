@@ -1,6 +1,6 @@
 const Deck = require("../models/Deck");
 
-module.exports.createDeckController = async (req, res) => {
+const createDeckController = async (req, res) => {
   const newDeck = new Deck({
     title: req.body.title,
   });
@@ -8,13 +8,19 @@ module.exports.createDeckController = async (req, res) => {
   res.json(createdDeck);
 };
 
-module.exports.deleteDeckController = async (req, res) => {
+const deleteDeckController = async (req, res) => {
   const deckId = req.params.deckId;
   const deletedDeck = await Deck.findByIdAndDelete(deckId);
   res.json(deletedDeck);
 };
 
-module.exports.getDecksController = async (req, res) => {
+const getDecksController = async (req, res) => {
   const decks = await Deck.find();
   res.json(decks);
+};
+
+module.exports = {
+  createDeckController,
+  deleteDeckController,
+  getDecksController,
 };

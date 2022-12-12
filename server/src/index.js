@@ -10,6 +10,10 @@ const {
   deleteDeckController,
 } = require("./controllers/decksControllers.js");
 
+const {
+  createCardForDeckController,
+} = require("./controllers/cardsControllers.js");
+
 const PORT = 5000;
 
 app.use(cors("*"));
@@ -18,6 +22,8 @@ app.use(express.json({ extended: true }));
 app.get("/decks", getDecksController);
 app.post("/decks", createDeckController);
 app.delete("/decks/:deckId", deleteDeckController);
+
+app.post("/decks/:deckId/cards", createCardForDeckController);
 
 mongoose
   .set("strictQuery", true)
